@@ -21,7 +21,22 @@ from radio.models import Tweet_Trends,Broadcast
 from hashtag import Hashtag
 import json
 import traceback,sys
+import signal
 
+class timer:
+    def __init__(self):
+        self.flag = True
+
+    def _handler(self, x, y):
+        self.flag = False
+
+    def set(self, sec):
+        #signal.signal(signal.SIGALRM, self._handler)
+        signal.signal(signal.SIGTERM, self._handler)
+        signal.alarm(sec)
+
+    def check(self):
+        return self.flag
 
 class Command(BaseCommand):
 
@@ -48,6 +63,11 @@ class Command(BaseCommand):
 
             #メインループ
             for r in res:
+                #timeout処理
+                tmr = timer()
+                tmr.set(120)
+                tmr.check()
+                
                 try:
                     #jsonに変換
                     data= json.loads(r)
