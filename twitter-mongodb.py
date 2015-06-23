@@ -5,9 +5,6 @@ import os,sys
 sys.path.append(settings.COMMANDLIB_DIRS[0])
 from __builtin__ import False
 
-"""tweetを日本語と英語に分けて保存する。
-実行中に後から止める事が出来るようにコマンドラインの処理をどうにか
-"""
 import traceback,sys
 import time
 import re
