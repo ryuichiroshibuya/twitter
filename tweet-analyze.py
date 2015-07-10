@@ -143,7 +143,7 @@ class Command(BaseCommand):
     def check(self,tweet,blist):
 
         for b in blist:
-            if self.datetime_to_epoch(b['begin_time']) <= self.datetime_to_epoch(tweet.created_at) <= self.datetime_to_epoch(b['end_time']):
+            if b['begin_time'] <= self.datetime_to_epoch(tweet.created_at) <= b['end_time']:
                 for tweethashtag in jsonDec.decode(tweet.hashtags):
                     tweethashtag = tweethashtag.encode('utf-8')
                     if tweethashtag in b['broadcast_hashtag']:
@@ -243,8 +243,8 @@ class Command(BaseCommand):
         blist = []
         for broadcast in Broadcast.objects.all().order_by('-broadcast_id'):
             dict = {"broadcast_id":broadcast.broadcast_id,
-                    "begin_time":broadcast.begin_time,
-                    "end_time":broadcast.end_time,
+                    "begin_time": self.datetime_to_epoch(broadcast.begin_time),
+                    "end_time": self.datetime_to_epoch(broadcast.end_time),
                     "broadcast_hashtag":json.loads(broadcast.broadcast_hashtag),
                     }
             blist.append(dict)
